@@ -135,10 +135,6 @@ Public Class SSL2AimAssistVerticle
         Dim landPt1 As Integer = PictureBox2.Location.X + Range - 7.5
         Dim landPt2 As Integer = PictureBox2.Location.Y - 13.5
 
-
-
-        'Graphics.FromImage(PictureBox1.Image).FillEllipse(Brushes.White, )
-
         'Graphics.FromImage(PictureBox1.Image).FillRectangle(Brushes.Teal, landPt1, landPt2, 10, 10)
         PictureBox1.Refresh()
     End Sub

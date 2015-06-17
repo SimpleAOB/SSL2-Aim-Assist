@@ -90,8 +90,8 @@ Public Class Form1
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PictureBox1.Image = New Bitmap(800, 600)
-        PictureBox2.Image = New Bitmap(16, 16)
-        Graphics.FromImage(PictureBox2.Image).FillRectangle(Brushes.Lime, 0, 0, 16, 16)
+        PictureBox2.Image = New Bitmap(15, 15)
+        Graphics.FromImage(PictureBox2.Image).FillRectangle(Brushes.Lime, 0, 0, 15, 15)
         PictureBox2.Refresh()
 
         If My.Settings.openedUpdate = True Then
