@@ -1,9 +1,6 @@
 ﻿Imports System.Runtime.InteropServices
-
 Public Class Form1
     Private Declare Function FlashWindow Lib "user32" (ByVal hwnd As Long, ByVal bInvert As Long) As Long
-
-    Public Declare Auto Function SetCursorPos Lib "User32.dll" (ByVal X As Integer, ByVal Y As Integer) As Long
     Public Declare Auto Function GetCursorPos Lib "User32.dll" (ByRef lpPoint As Point) As Long
     Public Declare Sub mouse_event Lib "user32" Alias "mouse_event" (ByVal dwFlags As Long, ByVal dx As Long, ByVal dy As Long, ByVal cButtons As Long, ByVal dwExtraInfo As Long)
     Public Const MOUSEEVENTF_LEFTDOWN = &H2 ' left button down
@@ -12,6 +9,21 @@ Public Class Form1
     Public Const MOUSEEVENTF_MIDDLEUP = &H40 ' middle button up
     Public Const MOUSEEVENTF_RIGHTDOWN = &H8 ' right button down
     Public Const MOUSEEVENTF_RIGHTUP = &H10 ' right button up
+
+    'This is a replacement for Cursor.Position in WinForms
+    <System.Runtime.InteropServices.DllImport("user32.dll")> _
+    Private Shared Function SetCursorPos(x As Integer, y As Integer) As Boolean
+    End Function
+
+    <System.Runtime.InteropServices.DllImport("user32.dll")> _
+    Public Shared Sub mouse_event(dwFlags As Integer, dx As Integer, dy As Integer, cButtons As Integer, dwExtraInfo As Integer)
+    End Sub
+    'This simulates a left mouse click
+    Public Shared Sub LeftMouseClick(xpos As Integer, ypos As Integer)
+        SetCursorPos(xpos, ypos)
+        mouse_event(MOUSEEVENTF_LEFTDOWN, xpos, ypos, 0, 0)
+        mouse_event(MOUSEEVENTF_LEFTUP, xpos, ypos, 0, 0)
+    End Sub
 
     Dim lockedInPlace As Boolean = False
     Dim lockedX As Integer
@@ -77,6 +89,7 @@ Public Class Form1
             ctrl.Top = (ctrl.Top + e.Y) - CursorY
             ' Ensure moved control stays on top of anything it is dragged on to
             ctrl.BringToFront()
+            ProjectileMotion()
         End If
     End Sub
 
@@ -106,7 +119,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub ProjectileMotion()
+    Private Sub ProjectileMotion(Optional ByVal doClick As Boolean = False)
         Dim Angle As Integer = TrackBar1.Value
         Dim Strength As Double = TrackBar2.Value
 
@@ -137,6 +150,7 @@ Public Class Form1
         PictureBox1.Image = New Bitmap(800, 600)
 
         Dim percent As Double = 0
+        Dim drewCircle As Boolean = False
         While percent < 3
             percent = percent + (My.Settings.dotPercent / 100)
             Dim x As Integer
@@ -158,6 +172,29 @@ Public Class Form1
 
             Graphics.FromImage(PictureBox1.Image).FillRectangle(Brushes.White, x, y, 10, 10)
             Graphics.FromImage(PictureBox1.Image).FillRectangle(Brushes.DimGray, x + 1, y + 1, 8, 8)
+
+            If (drewCircle = False) Then
+                Dim rad As Double = Math.Sqrt(4 * (Strength - 2.7))
+                Dim radCenter As Int32 = Convert.ToInt32((rad * rad) / 2)
+                Dim circleY As Double = (rad * rad) * Math.Sin(Theta)
+                Dim circleX As Double = (rad * rad) * Math.Cos(Theta)
+                Dim circleXP As Int32 = 0 + Convert.ToInt32(circleX / 2)
+                Dim circleYP As Int32 = 6 - Convert.ToInt32(circleY / 2)
+                Dim circleXF As Int32 = PictureBox2.Location.X + 0 + Convert.ToInt32(circleX / 2)
+                Dim circleYF As Int32 = PictureBox2.Location.Y - 6 - Convert.ToInt32(circleY / 2)
+                If (doClick) Then
+                    Dim p As Point = Me.PointToScreen(PictureBox2.Location)
+                    'Getting closer >.>
+                    LeftMouseClick(p.X + circleXP, p.Y - circleYP)
+                End If
+                Graphics.FromImage(PictureBox1.Image).DrawEllipse(Pens.Blue(), PictureBox2.Location.X - radCenter, PictureBox2.Location.Y - radCenter - 5, Convert.ToInt32(rad * rad), Convert.ToInt32(rad * rad))
+                Graphics.FromImage(PictureBox1.Image).FillRectangle(Brushes.Orange, circleXF, circleYF, 6, 6)
+                TextBox3.Text = circleX * 4
+                TextBox5.Text = circleY * 4
+                TextBox4.Text = rad
+                TextBox6.Text = rad * rad
+                drewCircle = True
+            End If
         End While
 
         If originalAngle > 90 Then
@@ -169,8 +206,23 @@ Public Class Form1
         Dim landPt1 As Integer = PictureBox2.Location.X + Range - 7.5
         Dim landPt2 As Integer = PictureBox2.Location.Y - 13.5
 
+        Graphics.FromImage(PictureBox1.Image).DrawLine(Pens.Red(), New Point(PictureBox2.Location.X, PictureBox2.Location.Y - 205), New Point(PictureBox2.Location.X, PictureBox2.Location.Y + 195))
+        Graphics.FromImage(PictureBox1.Image).DrawLine(Pens.Red(), New Point(PictureBox2.Location.X - 200, PictureBox2.Location.Y - 5), New Point(PictureBox2.Location.X + 200, PictureBox2.Location.Y - 5))
+        Graphics.FromImage(PictureBox1.Image).DrawEllipse(Pens.Red(), PictureBox2.Location.X - 200, PictureBox2.Location.Y - 205, 400, 400)
+
+
         'Graphics.FromImage(PictureBox1.Image).FillRectangle(Brushes.Teal, landPt1, landPt2, 10, 10)
         PictureBox1.Refresh()
+    End Sub
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="pen">Color of circle</param>
+    ''' <param name="location">Where to draw</param>
+    ''' <param name="radius">Radius</param>
+    ''' <remarks></remarks>
+    Public Sub DrawCircle(pen As Pen, location As Point, radius As Integer)
+        Graphics.FromImage(PictureBox1.Image).DrawEllipse(pen, location.X - radius, location.Y - radius, radius, radius)
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
@@ -185,5 +237,17 @@ Public Class Form1
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Options.Show()
+    End Sub
+
+    Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles TextBox3.TextChanged
+        ProjectileMotion()
+    End Sub
+
+    Private Sub TextBox5_TextChanged(sender As Object, e As EventArgs) Handles TextBox5.TextChanged, TextBox4.TextChanged, TextBox6.TextChanged
+        ProjectileMotion()
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        ProjectileMotion(True)
     End Sub
 End Class

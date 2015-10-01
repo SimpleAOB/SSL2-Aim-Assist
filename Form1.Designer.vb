@@ -28,6 +28,10 @@ Partial Class Form1
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.TextBox6 = New System.Windows.Forms.TextBox()
+        Me.TextBox4 = New System.Windows.Forms.TextBox()
+        Me.TextBox5 = New System.Windows.Forms.TextBox()
+        Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
@@ -41,6 +45,7 @@ Partial Class Form1
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TrackBar2 = New System.Windows.Forms.TrackBar()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.Button5 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -106,6 +111,11 @@ Partial Class Form1
         'GroupBox2
         '
         Me.GroupBox2.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.GroupBox2.Controls.Add(Me.Button5)
+        Me.GroupBox2.Controls.Add(Me.TextBox6)
+        Me.GroupBox2.Controls.Add(Me.TextBox4)
+        Me.GroupBox2.Controls.Add(Me.TextBox5)
+        Me.GroupBox2.Controls.Add(Me.TextBox3)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.Button4)
         Me.GroupBox2.Controls.Add(Me.Button2)
@@ -124,6 +134,34 @@ Partial Class Form1
         Me.GroupBox2.Size = New System.Drawing.Size(800, 154)
         Me.GroupBox2.TabIndex = 3
         Me.GroupBox2.TabStop = False
+        '
+        'TextBox6
+        '
+        Me.TextBox6.Location = New System.Drawing.Point(522, 128)
+        Me.TextBox6.Name = "TextBox6"
+        Me.TextBox6.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox6.TabIndex = 16
+        '
+        'TextBox4
+        '
+        Me.TextBox4.Location = New System.Drawing.Point(416, 128)
+        Me.TextBox4.Name = "TextBox4"
+        Me.TextBox4.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox4.TabIndex = 16
+        '
+        'TextBox5
+        '
+        Me.TextBox5.Location = New System.Drawing.Point(310, 128)
+        Me.TextBox5.Name = "TextBox5"
+        Me.TextBox5.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox5.TabIndex = 16
+        '
+        'TextBox3
+        '
+        Me.TextBox3.Location = New System.Drawing.Point(204, 128)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox3.TabIndex = 16
         '
         'Label7
         '
@@ -250,6 +288,15 @@ Partial Class Form1
         Me.TextBox2.Size = New System.Drawing.Size(800, 13)
         Me.TextBox2.TabIndex = 12
         '
+        'Button5
+        '
+        Me.Button5.Location = New System.Drawing.Point(628, 125)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(75, 23)
+        Me.Button5.TabIndex = 17
+        Me.Button5.Text = "Set Ingame"
+        Me.Button5.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -298,5 +345,10 @@ Partial Class Form1
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents Button4 As System.Windows.Forms.Button
     Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents TextBox5 As System.Windows.Forms.TextBox
+    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
+    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
+    Friend WithEvents TextBox6 As System.Windows.Forms.TextBox
+    Friend WithEvents Button5 As System.Windows.Forms.Button
 
 End Class
