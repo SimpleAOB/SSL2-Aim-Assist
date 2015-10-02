@@ -180,12 +180,21 @@ Public Class Form1
                 Dim circleX As Double = (rad * rad) * Math.Cos(Theta)
                 Dim circleXP As Int32 = 0 + Convert.ToInt32(circleX / 2)
                 Dim circleYP As Int32 = -6 - Convert.ToInt32(circleY / 2)
-                Dim circleXF As Int32 = PictureBox2.Location.X + 0 + Convert.ToInt32(circleX / 2)
+                Dim circleXF As Int32
+                If (originalAngle > 90) Then
+                    circleXF = PictureBox2.Location.X + 0 - Convert.ToInt32(circleX / 2)
+                Else
+                    circleXF = PictureBox2.Location.X + 0 + Convert.ToInt32(circleX / 2)
+                End If
                 Dim circleYF As Int32 = PictureBox2.Location.Y - 6 - Convert.ToInt32(circleY / 2)
                 If (doClick) Then
                     Dim p As Point = PictureBox1.PointToScreen(PictureBox2.Location)
                     PictureBox1.Refresh()
-                    LeftMouseClick(p.X + circleXP, p.Y + circleYP)
+                    If (originalAngle > 90) Then
+                        LeftMouseClick(p.X - circleXP, p.Y + circleYP)
+                    Else
+                        LeftMouseClick(p.X + circleXP, p.Y + circleYP)
+                    End If
                 End If
                 Graphics.FromImage(PictureBox1.Image).DrawEllipse(Pens.Blue(), PictureBox2.Location.X - radCenter, PictureBox2.Location.Y - radCenter - 5, Convert.ToInt32(rad * rad), Convert.ToInt32(rad * rad))
                 Graphics.FromImage(PictureBox1.Image).FillRectangle(Brushes.Orange, circleXF, circleYF, 6, 6)
